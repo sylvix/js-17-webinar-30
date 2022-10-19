@@ -26,9 +26,24 @@ const run = async () => {
     lastNameInput.value = user.lastName;
   });
 
-  profileForm.addEventListener('submit', event => {
+  profileForm.addEventListener('submit', async event => {
     event.preventDefault();
-    console.log('Something');
+    const firstName = firstNameInput.value;
+    const lastName = lastNameInput.value;
+
+    const body = new URLSearchParams();
+    body.append('firstName', firstName);
+    body.append('lastName', lastName);
+
+    try {
+      await fetch(baseUrl + '/profile', {method: 'POST', body});
+      profileModal.hide();
+      userNameH3.innerText = firstName + ' ' + lastName;
+      user.firstName = firstName;
+      user.lastName = lastName;
+    } catch (e) {
+      alert('Something went wrong!');
+    }
   })
 };
 
